@@ -13,7 +13,6 @@
       "isolatedModules": true,
       "noEmit": true,
       "jsx": "preserve",
-      "types": ["jest", "node", "react", "react-dom", "react-router-dom"],
       "skipLibCheck": true
    },
    "include": ["src"]
