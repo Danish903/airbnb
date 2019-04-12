@@ -17,7 +17,7 @@ export interface FormValues {
    lastName: string;
 }
 interface Props {
-   submit: (values: FormValues) => Promise<FormikErrors<FormValues> | null>;
+   submit: (values: FormValues) => Promise<void>;
 }
 export class RegisterView extends Component<Props> {
    render() {
