@@ -46,7 +46,7 @@
       "typescript": "^3.4.1"
    },
    "scripts": {
-      "start": "env-cmd ./config/prod.env ts-node-dev --respawn src/index.ts",
+      "dev": "env-cmd ./config/prod.env ts-node-dev --respawn src/index.ts",
       "db:setup": "env-cmd ./config/prod.env ts-node ./src/testUtils/setup.ts",
       "test": "npm run db:setup && jest --watch --forceExit --detectOpenHandles"
    }
