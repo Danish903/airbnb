@@ -44,7 +44,6 @@ export class User extends BaseEntity {
 
    @Field(() => [Book])
    async books(@Ctx() ctx: MyContext): Promise<Book[]> {
-      // console.log("===========", ct);
       return ctx.booksLoader.load(this.id);
    }
 }
