@@ -1,0 +1,21 @@
+{
+   "name": "@abb/controller",
+   "version": "1.0.0",
+   "main": "dist/index.ts",
+   "typings": "dist/index.d.ts",
+   "license": "MIT",
+   "scripts": {
+      "build": "rimraf ./dist && tsc"
+   },
+   "dependencies": {
+      "react": "^16.8.6",
+      "react-dom": "^16.8.6",
+      "rimraf": "^2.6.3",
+      "typescript": "^3.4.3"
+   },
+   "devDependencies": {
+      "@types/node": "^11.13.4",
+      "@types/react": "^16.8.13",
+      "@types/react-dom": "^16.8.4"
+   }
+}

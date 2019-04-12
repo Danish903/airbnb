@@ -1,0 +1,16 @@
+{
+   "name": "@abb/common",
+   "version": "1.0.0",
+   "main": "dist/index.ts",
+   "typings": "dist/index.d.ts",
+   "license": "MIT",
+   "scripts": {
+      "build": "rimraf ./dist && tsc"
+   },
+   "devDependencies": {
+      "rimraf": "^2.6.3",
+      "tslint": "^5.15.0",
+      "tslint-config-prettier": "^1.18.0",
+      "typescript": "^3.4.3"
+   }
+}

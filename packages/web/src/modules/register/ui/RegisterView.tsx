@@ -1,6 +1,23 @@
 import React, { Component } from "react";
 import { Form, Icon, Input } from "antd";
-import { Formik, FormikErrors } from "formik";
+import { Formik, Field } from "formik";
+import * as yup from "yup";
+import { InputField } from "../../shared/InputField";
+
+const validationSchema = yup.object().shape({
+   email: yup
+      .string()
+      .min(3, "Email is not long enough")
+      .max(255)
+      .email("Email must be a valid email")
+      .required("Email is required"),
+   password: yup
+      .string()
+      .required("Password is required.")
+      .min(6, "X Password strength: weak."),
+   firstName: yup.string().required("First Name is required"),
+   lastName: yup.string().required("Last Name is required")
+});
 
 const btnStyle = {
    background: "#1890ff",
@@ -25,47 +42,68 @@ export class RegisterView extends Component<Props> {
          <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ width: 500 }}>
                <Formik
+                  validateOnChange={true}
+                  validateOnBlur={true}
                   initialValues={{
                      email: "",
                      firstName: "",
                      lastName: "",
                      password: ""
                   }}
+                  validationSchema={validationSchema}
                   onSubmit={async (values, actions) => {
                      await this.props.submit(values);
                   }}
                >
-                  {({ values, handleSubmit, handleChange }) => (
+                  {({ handleSubmit }) => (
                      <Form className="login-form" onSubmit={handleSubmit}>
-                        <Form.Item>
-                           <Input
-                              prefix={
-                                 <Icon
-                                    type="user"
-                                    style={{ color: "rgba(0,0,0,.25)" }}
-                                 />
-                              }
-                              name="email"
-                              placeholder="Email"
-                              onChange={handleChange}
-                              value={values.email}
-                           />
-                        </Form.Item>
-                        <Form.Item>
-                           <Input
-                              prefix={
-                                 <Icon
-                                    type="lock"
-                                    style={{ color: "rgba(0,0,0,.25)" }}
-                                 />
-                              }
-                              type="password"
-                              placeholder="Password"
-                              name="password"
-                              onChange={handleChange}
-                              value={values.password}
-                           />
-                        </Form.Item>
+                        <Field
+                           prefix={
+                              <Icon
+                                 type="user"
+                                 style={{ color: "rgba(0,0,0,.25)" }}
+                              />
+                           }
+                           name="email"
+                           placeholder="Email"
+                           component={InputField}
+                        />
+                        <Field
+                           prefix={
+                              <Icon
+                                 type="user"
+                                 style={{ color: "rgba(0,0,0,.25)" }}
+                              />
+                           }
+                           name="firstName"
+                           placeholder="First Name"
+                           component={InputField}
+                        />
+                        <Field
+                           prefix={
+                              <Icon
+                                 type="user"
+                                 style={{ color: "rgba(0,0,0,.25)" }}
+                              />
+                           }
+                           name="lastName"
+                           placeholder="Last Name"
+                           component={InputField}
+                        />
+
+                        <Field
+                           prefix={
+                              <Icon
+                                 type="lock"
+                                 style={{ color: "rgba(0,0,0,.25)" }}
+                              />
+                           }
+                           type="password"
+                           placeholder="Password"
+                           name="password"
+                           component={InputField}
+                        />
+
                         <Form.Item>
                            <a className="login-form-forgot" href="">
                               Forgot password
