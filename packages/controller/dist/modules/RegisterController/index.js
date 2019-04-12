@@ -1,3 +1,7 @@
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47,22 +51,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import * as React from "react";
-var RegisterController = /** @class */ (function (_super) {
-    __extends(RegisterController, _super);
-    function RegisterController() {
+import { gql } from "apollo-boost";
+import { graphql } from "react-apollo";
+export var REGISTER_MUTATION = gql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n   mutation Register($data: RegisterInput!) {\n      register(data: $data) {\n         id\n         firstName\n         lastName\n         email\n         name\n      }\n   }\n"], ["\n   mutation Register($data: RegisterInput!) {\n      register(data: $data) {\n         id\n         firstName\n         lastName\n         email\n         name\n      }\n   }\n"])));
+var C = /** @class */ (function (_super) {
+    __extends(C, _super);
+    function C() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.submit = function (values) { return __awaiter(_this, void 0, void 0, function () {
+            var res;
             return __generator(this, function (_a) {
-                console.log(values);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        console.log(values);
+                        return [4 /*yield*/, this.props.mutate({
+                                variables: {
+                                    data: values
+                                }
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        console.log({ res: res });
+                        return [2 /*return*/];
+                }
             });
         }); };
         return _this;
     }
-    RegisterController.prototype.render = function () {
+    C.prototype.render = function () {
         return this.props.children({ submit: this.submit });
     };
-    return RegisterController;
+    return C;
 }(React.Component));
-export { RegisterController };
+export var RegisterController = graphql(REGISTER_MUTATION)(C);
+var templateObject_1;
 //# sourceMappingURL=index.js.map
