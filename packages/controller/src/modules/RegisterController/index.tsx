@@ -1,6 +1,10 @@
 import * as React from "react";
 import { gql } from "apollo-boost";
 import { graphql, ChildMutateProps } from "react-apollo";
+import {
+   RegisterMutation,
+   RegisterMutationVariables
+} from "../../generated/apolloComponents";
 
 export const REGISTER_MUTATION = gql`
    mutation Register($data: RegisterInput!) {
@@ -15,16 +19,17 @@ export const REGISTER_MUTATION = gql`
 `;
 interface Props {
    children: (data: {
-      submit: (values: any) => Promise<void>;
+      submit: (values: RegisterMutationVariables) => Promise<void>;
    }) => JSX.Element | null;
 }
-class C extends React.Component<ChildMutateProps<Props, any, any>> {
-   submit = async (values: any) => {
+class C extends React.Component<
+   ChildMutateProps<Props, RegisterMutation, RegisterMutationVariables>
+> {
+   submit = async (data: RegisterMutationVariables) => {
       const res = await this.props.mutate({
-         variables: {
-            data: values
-         }
+         variables: data
       });
+
       console.log({ res });
    };
    render() {
@@ -32,4 +37,8 @@ class C extends React.Component<ChildMutateProps<Props, any, any>> {
    }
 }
 
-export const RegisterController = graphql(REGISTER_MUTATION)(C);
+export const RegisterController = graphql<
+   Props,
+   RegisterMutation,
+   RegisterMutationVariables
+>(REGISTER_MUTATION)(C);

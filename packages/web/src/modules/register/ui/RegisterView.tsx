@@ -34,7 +34,7 @@ export interface FormValues {
    lastName: string;
 }
 interface Props {
-   submit: (values: FormValues) => Promise<void>;
+   submit: ({ data }: { data: FormValues }) => Promise<void>;
 }
 export class RegisterView extends Component<Props> {
    render() {
@@ -52,7 +52,8 @@ export class RegisterView extends Component<Props> {
                   }}
                   validationSchema={validationSchema}
                   onSubmit={async (values, actions) => {
-                     await this.props.submit(values);
+                     const data = values;
+                     await this.props.submit({ data });
                   }}
                >
                   {({ handleSubmit }) => (

@@ -1,0 +1,15 @@
+overwrite: true
+schema: "http://localhost:4000/graphql"
+documents: "./src/graphql/**/*.ts"
+pluckConfig:
+   modules:
+      - name: "apollo-boost"
+        identifier: "gql"
+generates:
+   src/generated/apolloComponents.tsx:
+      plugins:
+         - "typescript"
+         - "typescript-operations"
+         - "typescript-react-apollo"
+      config:
+         withComponent: true

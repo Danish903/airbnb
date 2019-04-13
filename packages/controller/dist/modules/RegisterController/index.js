@@ -58,17 +58,13 @@ var C = /** @class */ (function (_super) {
     __extends(C, _super);
     function C() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.submit = function (values) { return __awaiter(_this, void 0, void 0, function () {
+        _this.submit = function (data) { return __awaiter(_this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log(values);
-                        return [4 /*yield*/, this.props.mutate({
-                                variables: {
-                                    data: values
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, this.props.mutate({
+                            variables: data
+                        })];
                     case 1:
                         res = _a.sent();
                         console.log({ res: res });
