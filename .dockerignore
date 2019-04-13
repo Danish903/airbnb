@@ -1,0 +1,7 @@
+*
+!./package.json 
+!./packages/server/package.json 
+!./packages/common/package.json 
+!./packages/server/dist 
+!./packages/common/dist 
+!./ormconfig.json 
