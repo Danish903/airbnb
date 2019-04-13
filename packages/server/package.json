@@ -49,6 +49,7 @@
    "scripts": {
       "dev": "env-cmd ./config/prod.env ts-node-dev --respawn src/index.ts",
       "db:setup": "env-cmd ./config/prod.env ts-node ./src/testUtils/setup.ts",
-      "test": "npm run db:setup && jest --watch --forceExit --detectOpenHandles"
+      "test": "npm run db:setup && jest --watch --forceExit --detectOpenHandles",
+      "build": "tsc src/index.ts"
    }
 }
