@@ -7,7 +7,7 @@ interface Options {
    variableValues?: Maybe<{
       [key: string]: any;
    }>;
-   userId?: number;
+   userId?: string;
 }
 
 let schema: GraphQLSchema;
