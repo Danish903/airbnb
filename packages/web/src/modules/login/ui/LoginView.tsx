@@ -1,23 +1,20 @@
 import React, { Component } from "react";
-import { Form, Icon, Input } from "antd";
+import { Form, Icon } from "antd";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-import { InputField } from "../../shared/InputField";
 import { Link } from "react-router-dom";
+import { InputField } from "../../shared/InputField";
 
 const validationSchema = yup.object().shape({
    email: yup
       .string()
-      .min(3, "Email is not long enough")
       .max(255)
       .email("Email must be a valid email")
       .required("Email is required"),
    password: yup
       .string()
       .required("Password is required.")
-      .min(6, "X Password strength: weak."),
-   firstName: yup.string().required("First Name is required"),
-   lastName: yup.string().required("Last Name is required")
+      .min(6, "X Password strength: weak.")
 });
 
 const btnStyle = {
@@ -31,30 +28,28 @@ const btnStyle = {
 export interface FormValues {
    email: string;
    password: string;
-   firstName: string;
-   lastName: string;
 }
 interface Props {
-   submit: ({ data }: { data: FormValues }) => Promise<void>;
+   submit: (values: FormValues) => Promise<any | null>;
 }
-export class RegisterView extends Component<Props> {
+export class LoginView extends Component<Props> {
    render() {
       return (
          <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ width: 500 }}>
                <Formik
-                  validateOnChange={true}
-                  validateOnBlur={true}
+                  validateOnChange={false}
+                  validateOnBlur={false}
                   initialValues={{
                      email: "",
-                     firstName: "",
-                     lastName: "",
                      password: ""
                   }}
                   validationSchema={validationSchema}
                   onSubmit={async (values, actions) => {
-                     const data = values;
-                     await this.props.submit({ data });
+                     const res = await this.props.submit(values);
+                     if (res) {
+                        actions.setErrors(res);
+                     }
                   }}
                >
                   {({ handleSubmit }) => (
@@ -68,28 +63,6 @@ export class RegisterView extends Component<Props> {
                            }
                            name="email"
                            placeholder="Email"
-                           component={InputField}
-                        />
-                        <Field
-                           prefix={
-                              <Icon
-                                 type="user"
-                                 style={{ color: "rgba(0,0,0,.25)" }}
-                              />
-                           }
-                           name="firstName"
-                           placeholder="First Name"
-                           component={InputField}
-                        />
-                        <Field
-                           prefix={
-                              <Icon
-                                 type="user"
-                                 style={{ color: "rgba(0,0,0,.25)" }}
-                              />
-                           }
-                           name="lastName"
-                           placeholder="Last Name"
                            component={InputField}
                         />
 
@@ -112,10 +85,10 @@ export class RegisterView extends Component<Props> {
                            </a>
                            <br />
                            <button type="submit" style={btnStyle}>
-                              Register
+                              Login
                            </button>
                            <br />
-                           Or <Link to="/login">Login now!</Link>
+                           Or <Link to="/register">Register!</Link>
                         </Form.Item>
                      </Form>
                   )}

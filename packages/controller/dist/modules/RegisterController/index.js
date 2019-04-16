@@ -1,7 +1,3 @@
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -51,9 +47,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import * as React from "react";
-import { gql } from "apollo-boost";
 import { graphql } from "react-apollo";
-export var REGISTER_MUTATION = gql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n   mutation Register($data: RegisterInput!) {\n      register(data: $data) {\n         id\n         firstName\n         lastName\n         email\n         name\n      }\n   }\n"], ["\n   mutation Register($data: RegisterInput!) {\n      register(data: $data) {\n         id\n         firstName\n         lastName\n         email\n         name\n      }\n   }\n"])));
+import { REGISTER_MUTATION } from "../../graphql/user/mutations/register";
 var C = /** @class */ (function (_super) {
     __extends(C, _super);
     function C() {
@@ -80,5 +75,4 @@ var C = /** @class */ (function (_super) {
     return C;
 }(React.Component));
 export var RegisterController = graphql(REGISTER_MUTATION)(C);
-var templateObject_1;
 //# sourceMappingURL=index.js.map

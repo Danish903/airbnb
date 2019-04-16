@@ -1,22 +1,11 @@
 import * as React from "react";
-import { gql } from "apollo-boost";
+
 import { graphql, ChildMutateProps } from "react-apollo";
 import {
    RegisterMutation,
    RegisterMutationVariables
 } from "../../generated/apolloComponents";
-
-export const REGISTER_MUTATION = gql`
-   mutation Register($data: RegisterInput!) {
-      register(data: $data) {
-         id
-         firstName
-         lastName
-         email
-         name
-      }
-   }
-`;
+import { REGISTER_MUTATION } from "../../graphql/user/mutations/register";
 interface Props {
    children: (data: {
       submit: (values: RegisterMutationVariables) => Promise<void>;
