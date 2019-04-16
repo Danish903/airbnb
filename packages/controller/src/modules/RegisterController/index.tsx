@@ -6,20 +6,29 @@ import {
    RegisterMutationVariables
 } from "../../generated/apolloComponents";
 import { REGISTER_MUTATION } from "../../graphql/user/mutations/register";
+
 interface Props {
    children: (data: {
-      submit: (values: RegisterMutationVariables) => Promise<void>;
+      submit: (
+         values: RegisterMutationVariables
+      ) => Promise<{ [key: string]: string } | null>;
    }) => JSX.Element | null;
 }
 class C extends React.Component<
    ChildMutateProps<Props, RegisterMutation, RegisterMutationVariables>
 > {
    submit = async (data: RegisterMutationVariables) => {
-      const res = await this.props.mutate({
-         variables: data
-      });
+      try {
+         const res = await this.props.mutate({
+            variables: data
+         });
 
-      console.log({ res });
+         console.log({ res });
+         return null;
+      } catch (error) {
+         const err = { email: error.message.split(":").pop() };
+         return err;
+      }
    };
    render() {
       return this.props.children({ submit: this.submit });

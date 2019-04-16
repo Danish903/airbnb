@@ -96,6 +96,15 @@ export type User = {
   name: Scalars["String"];
   books: Array<Book>;
 };
+export type ForgotPassowrdMutationVariables = {
+  email: Scalars["String"];
+};
+
+export type ForgotPassowrdMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "forgotPassword"
+>;
+
 export type LoginMutationVariables = {
   email: Scalars["String"];
   password: Scalars["String"];
@@ -125,6 +134,60 @@ import gql from "graphql-tag";
 import * as React from "react";
 import * as ReactApollo from "react-apollo";
 
+export const ForgotPassowrdDocument = gql`
+  mutation ForgotPassowrd($email: String!) {
+    forgotPassword(email: $email)
+  }
+`;
+
+export class ForgotPassowrdComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      ForgotPassowrdMutation,
+      ForgotPassowrdMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        ForgotPassowrdMutation,
+        ForgotPassowrdMutationVariables
+      >
+        mutation={ForgotPassowrdDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type ForgotPassowrdProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    ForgotPassowrdMutation,
+    ForgotPassowrdMutationVariables
+  >
+> &
+  TChildProps;
+export type ForgotPassowrdMutationFn = ReactApollo.MutationFn<
+  ForgotPassowrdMutation,
+  ForgotPassowrdMutationVariables
+>;
+export function withForgotPassowrd<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ForgotPassowrdMutation,
+        ForgotPassowrdMutationVariables,
+        ForgotPassowrdProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    ForgotPassowrdMutation,
+    ForgotPassowrdMutationVariables,
+    ForgotPassowrdProps<TChildProps>
+  >(ForgotPassowrdDocument, operationOptions);
+}
 export const LoginDocument = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {

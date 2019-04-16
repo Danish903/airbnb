@@ -46,7 +46,7 @@ export class ConfrimUserResolver {
    @Mutation(() => Boolean, { nullable: true })
    async forgotPassword(@Arg("email") email: string): Promise<boolean> {
       const user = await User.findOne({ where: { email } });
-      if (!user) return false;
+      if (!user) throw new Error("Invalid email provided");
       const token = v4();
       await redis.set(
          forgotPasswordConfirmationPrefix + token,

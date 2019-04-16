@@ -5,18 +5,6 @@ import * as yup from "yup";
 import { Link } from "react-router-dom";
 import { InputField } from "../../shared/InputField";
 
-const validationSchema = yup.object().shape({
-   email: yup
-      .string()
-      .max(255)
-      .email("Email must be a valid email")
-      .required("Email is required"),
-   password: yup
-      .string()
-      .required("Password is required.")
-      .min(6, "X Password strength: weak.")
-});
-
 const btnStyle = {
    background: "#1890ff",
    color: "#fff",
@@ -27,12 +15,11 @@ const btnStyle = {
 };
 export interface FormValues {
    email: string;
-   password: string;
 }
 interface Props {
    submit: (values: FormValues) => Promise<any | null>;
 }
-export class LoginView extends Component<Props> {
+export class ForgotPasswordView extends Component<Props> {
    render() {
       return (
          <div style={{ display: "flex", justifyContent: "center" }}>
@@ -41,10 +28,8 @@ export class LoginView extends Component<Props> {
                   validateOnChange={false}
                   validateOnBlur={false}
                   initialValues={{
-                     email: "",
-                     password: ""
+                     email: ""
                   }}
-                  validationSchema={validationSchema}
                   onSubmit={async (values, actions) => {
                      const res = await this.props.submit(values);
                      if (res) {
@@ -66,29 +51,9 @@ export class LoginView extends Component<Props> {
                            component={InputField}
                         />
 
-                        <Field
-                           prefix={
-                              <Icon
-                                 type="lock"
-                                 style={{ color: "rgba(0,0,0,.25)" }}
-                              />
-                           }
-                           type="password"
-                           placeholder="Password"
-                           name="password"
-                           component={InputField}
-                        />
-
                         <Form.Item>
-                           <Link
-                              className="login-form-forgot"
-                              to="/forgot-password"
-                           >
-                              Forgot password
-                           </Link>
-                           <br />
                            <button type="submit" style={btnStyle}>
-                              Login
+                              Reset Password
                            </button>
                            <br />
                            Or <Link to="/register">Register!</Link>

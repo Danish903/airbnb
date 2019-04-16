@@ -24,6 +24,7 @@ class RegisterResolver {
       password
    }: RegisterInput): Promise<User> {
       const hashedPassword = await bcrypt.hash(password, 12);
+
       const user = await User.create({
          firstName,
          lastName,

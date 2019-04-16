@@ -35,7 +35,11 @@ export interface FormValues {
    lastName: string;
 }
 interface Props {
-   submit: ({ data }: { data: FormValues }) => Promise<void>;
+   submit: ({
+      data
+   }: {
+      data: FormValues;
+   }) => Promise<{ [key: string]: string } | null>;
 }
 export class RegisterView extends Component<Props> {
    render() {
@@ -54,7 +58,12 @@ export class RegisterView extends Component<Props> {
                   validationSchema={validationSchema}
                   onSubmit={async (values, actions) => {
                      const data = values;
-                     await this.props.submit({ data });
+
+                     const res = await this.props.submit({ data });
+                     console.log(res);
+                     if (res) {
+                        actions.setErrors(res);
+                     }
                   }}
                >
                   {({ handleSubmit }) => (
@@ -107,9 +116,12 @@ export class RegisterView extends Component<Props> {
                         />
 
                         <Form.Item>
-                           <a className="login-form-forgot" href="">
+                           <Link
+                              className="login-form-forgot"
+                              to="/forgot-password"
+                           >
                               Forgot password
-                           </a>
+                           </Link>
                            <br />
                            <button type="submit" style={btnStyle}>
                               Register

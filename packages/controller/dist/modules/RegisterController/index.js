@@ -54,16 +54,23 @@ var C = /** @class */ (function (_super) {
     function C() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.submit = function (data) { return __awaiter(_this, void 0, void 0, function () {
-            var res;
+            var res, error_1, err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.props.mutate({
-                            variables: data
-                        })];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.props.mutate({
+                                variables: data
+                            })];
                     case 1:
                         res = _a.sent();
                         console.log({ res: res });
-                        return [2 /*return*/];
+                        return [2 /*return*/, null];
+                    case 2:
+                        error_1 = _a.sent();
+                        err = { email: error_1.message.split(":").pop() };
+                        return [2 /*return*/, err];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };
