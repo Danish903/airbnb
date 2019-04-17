@@ -1,5 +1,12 @@
-import { BaseEntity, PrimaryGeneratedColumn, Entity, Column } from "typeorm";
+import {
+   BaseEntity,
+   PrimaryGeneratedColumn,
+   Entity,
+   Column,
+   ManyToOne
+} from "typeorm";
 import { ObjectType, Field, ID, Float, Int } from "type-graphql";
+import { User } from "./User";
 
 @ObjectType()
 @Entity() // listings table name for the db
@@ -11,6 +18,10 @@ export class Listing extends BaseEntity {
    @Field()
    @Column("varchar", { length: 100 })
    name: string;
+
+   @Field()
+   @Column("varchar", { length: 100 })
+   category: string;
 
    @Field()
    @Column("text")
@@ -43,4 +54,7 @@ export class Listing extends BaseEntity {
    @Field(() => [String])
    @Column("text", { array: true })
    amenities: string[];
+
+   @ManyToOne(() => User, user => user.listings)
+   user: User;
 }

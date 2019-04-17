@@ -9,6 +9,7 @@ import { ObjectType, Field, ID, Root, Ctx } from "type-graphql";
 import { AuthorBook } from "./AuthorBook";
 import { Book } from "./Book";
 import { MyContext } from "src/types/MyContext";
+import { Listing } from "./Listing";
 
 @ObjectType()
 @Entity()
@@ -41,6 +42,9 @@ export class User extends BaseEntity {
 
    @OneToMany(() => AuthorBook, ab => ab.user)
    bookConnection: Promise<AuthorBook[]>;
+
+   @OneToMany(() => Listing, listing => listing.user)
+   listings: Listing[];
 
    @Field(() => [Book])
    async books(@Ctx() ctx: MyContext): Promise<Book[]> {
