@@ -37,7 +37,7 @@ class CreateListingResovler {
       const user = ctx.req.session!.userId;
       await Listing.create({
          ...data,
-         user
+         userId: user
       }).save();
       return true;
    }

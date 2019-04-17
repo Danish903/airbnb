@@ -46,6 +46,13 @@ export class User extends BaseEntity {
    @OneToMany(() => Listing, listing => listing.user)
    listings: Listing[];
 
+   @Field(() => [Listing])
+   async userListings(@Root() parent: User): Promise<Listing[]> {
+      return await await Listing.find({
+         where: { userId: parent.id }
+      });
+   }
+
    @Field(() => [Book])
    async books(@Ctx() ctx: MyContext): Promise<Book[]> {
       return ctx.booksLoader.load(this.id);

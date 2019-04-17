@@ -5,7 +5,7 @@ import {
    Column,
    ManyToOne
 } from "typeorm";
-import { ObjectType, Field, ID, Float, Int } from "type-graphql";
+import { ObjectType, Field, ID, Float, Int, Root } from "type-graphql";
 import { User } from "./User";
 
 @ObjectType()
@@ -54,9 +54,15 @@ export class Listing extends BaseEntity {
    @Field(() => [String])
    @Column("text", { array: true })
    amenities: string[];
-   @Field(() => ID)
+   // @Field(() => ID)
    @Column("uuid")
    userId: string;
    @ManyToOne(() => User, user => user.listings)
    user: User;
+
+   @Field(() => User)
+   async owner(@Root() parent: Listing): Promise<User> {
+      const user = await User.findOne(parent.userId);
+      return user!;
+   }
 }

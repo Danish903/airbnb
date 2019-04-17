@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import {
    createAuthorsLoader,
-   createBooksLoader
+   createBooksLoader,
+   createListingsLoader
 } from "../utilities/authorsLoader";
 
 export interface MyContext {
@@ -9,4 +10,5 @@ export interface MyContext {
    res: Response;
    authorsLoader: ReturnType<typeof createAuthorsLoader>;
    booksLoader: ReturnType<typeof createBooksLoader>; ///</typeof>
+   listingsLoader: ReturnType<typeof createListingsLoader>;
 }

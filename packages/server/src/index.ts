@@ -10,7 +10,8 @@ import { redis } from "./redis";
 import { createSchema } from "./utilities/createSchema";
 import {
    createAuthorsLoader,
-   createBooksLoader
+   createBooksLoader,
+   createListingsLoader
 } from "./utilities/authorsLoader";
 // import queryComplexity, {
 //    fieldConfigEstimator,
@@ -41,7 +42,8 @@ const main = async () => {
          req,
          res,
          authorsLoader: createAuthorsLoader(),
-         booksLoader: createBooksLoader()
+         booksLoader: createBooksLoader(),
+         listingsLoader: createListingsLoader()
       }),
       validationRules: [
          // queryComplexity({

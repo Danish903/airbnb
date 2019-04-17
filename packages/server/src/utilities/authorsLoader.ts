@@ -2,7 +2,8 @@ import DataLoader from "dataloader";
 import { In } from "typeorm";
 import { User } from "../entity/User";
 import { AuthorBook } from "../entity/AuthorBook";
-import { Book } from "src/entity/Book";
+import { Book } from "../entity/Book";
+import { Listing } from "../entity/Listing";
 
 const batchAuthors = async (bookIds: string[]) => {
    const authorBooks = await AuthorBook.find({
@@ -81,3 +82,70 @@ const batchBooks = async (userIds: string[]) => {
 };
 
 export const createBooksLoader = () => new DataLoader(batchBooks);
+
+const batchListings = async (userIds: string[]) => {
+   // userIds = ["id: 1", "id: 2"]
+
+   console.log(userIds);
+
+   const userListings = await Listing.find({
+      join: {
+         alias: "userListing",
+         innerJoinAndSelect: {
+            user: "userListing.user"
+         }
+      },
+
+      where: { userId: In(userIds) }
+   });
+   // console.log(userListings);
+   // const authorBooks = await AuthorBook.find({
+   //    join: {
+   //       alias: "authorBook",
+   //       innerJoinAndSelect: {
+   //          book: "authorBook.book"
+   //       }
+   //    },
+   //    where: {
+   //       userId: In(userIds)
+   //    }
+   // });
+
+   /*
+  authorBooks = 
+  {
+    authorId: 1,
+    bookId: 1,
+    __book__: { id: 1, name: 'book1' }
+  }
+  */
+
+   // console.log(authorBooks);
+
+   // const bookIdToAuthors: { [key: string]: Book[] } = {};
+
+   // authorBooks.forEach(ab => {
+   //    if (ab.authorId in bookIdToAuthors) {
+   //       bookIdToAuthors[ab.authorId].push((ab as any).__book__);
+   //    } else {
+   //       bookIdToAuthors[ab.authorId] = [(ab as any).__book__];
+   //    }
+   // });
+   /*
+
+   bookdIdAuthors["sdfsdfasdfasdf": [__book_: { id: 1, name : "book1" }]]
+   */
+
+   // return userIds.map(userId => bookIdToAuthors[userId]);
+
+   const listingMap: { [key: string]: Listing } = {};
+   // console.log(userListings);
+   userListings.forEach(listing => {
+      listingMap[listing.userId] = listing;
+   });
+
+   console.log(listingMap);
+   return userIds.map(userId => listingMap[userId]);
+};
+
+export const createListingsLoader = () => new DataLoader(batchListings);
