@@ -96,6 +96,14 @@ export type User = {
   name: Scalars["String"];
   books: Array<Book>;
 };
+export type ChangePassowrdMutationVariables = {
+  data: ChangePasswordInput;
+};
+
+export type ChangePassowrdMutation = { __typename?: "Mutation" } & {
+  changePassword: Maybe<{ __typename?: "User" } & Pick<User, "email" | "name">>;
+};
+
 export type ForgotPassowrdMutationVariables = {
   email: Scalars["String"];
 };
@@ -134,6 +142,63 @@ import gql from "graphql-tag";
 import * as React from "react";
 import * as ReactApollo from "react-apollo";
 
+export const ChangePassowrdDocument = gql`
+  mutation ChangePassowrd($data: ChangePasswordInput!) {
+    changePassword(data: $data) {
+      email
+      name
+    }
+  }
+`;
+
+export class ChangePassowrdComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      ChangePassowrdMutation,
+      ChangePassowrdMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        ChangePassowrdMutation,
+        ChangePassowrdMutationVariables
+      >
+        mutation={ChangePassowrdDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type ChangePassowrdProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    ChangePassowrdMutation,
+    ChangePassowrdMutationVariables
+  >
+> &
+  TChildProps;
+export type ChangePassowrdMutationFn = ReactApollo.MutationFn<
+  ChangePassowrdMutation,
+  ChangePassowrdMutationVariables
+>;
+export function withChangePassowrd<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ChangePassowrdMutation,
+        ChangePassowrdMutationVariables,
+        ChangePassowrdProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    ChangePassowrdMutation,
+    ChangePassowrdMutationVariables,
+    ChangePassowrdProps<TChildProps>
+  >(ChangePassowrdDocument, operationOptions);
+}
 export const ForgotPassowrdDocument = gql`
   mutation ForgotPassowrd($email: String!) {
     forgotPassword(email: $email)

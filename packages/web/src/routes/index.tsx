@@ -4,6 +4,7 @@ import App from "../App";
 import { RegisterConnector } from "../modules/register/RegisterConnector";
 import { LoginConnector } from "../modules/login/LoginConnector";
 import ForgotPasswordConnector from "../modules/forgotPassword/ForgotPasswordConnector";
+import ChangePasswordConnector from "../modules/changePassword/ChangePasswordConnector";
 
 export const Routes: React.FC<{}> = () => (
    <Router>
@@ -19,7 +20,7 @@ export const Routes: React.FC<{}> = () => (
          <Route
             path="/user/change-password/:id"
             exact
-            component={ForgotPasswordConnector}
+            component={ChangePasswordConnector}
          />
       </Switch>
    </Router>

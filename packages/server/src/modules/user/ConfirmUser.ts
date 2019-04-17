@@ -33,7 +33,7 @@ export class ConfrimUserResolver {
       @Ctx() ctx: MyContext
    ): Promise<User | null> {
       const userId = await redis.get(forgotPasswordConfirmationPrefix + token);
-      if (!userId) return null;
+      if (!userId) throw new Error("Invalid token or Your token is expired");
       const user = await User.findOne(userId);
       if (!user) return null;
       await redis.del(forgotPasswordConfirmationPrefix + token);
