@@ -54,7 +54,9 @@ export class Listing extends BaseEntity {
    @Field(() => [String])
    @Column("text", { array: true })
    amenities: string[];
-
+   @Field(() => ID)
+   @Column("uuid")
+   userId: string;
    @ManyToOne(() => User, user => user.listings)
    user: User;
 }
