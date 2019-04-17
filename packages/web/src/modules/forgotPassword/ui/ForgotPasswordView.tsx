@@ -18,6 +18,7 @@ export interface FormValues {
 }
 interface Props {
    submit: (values: FormValues) => Promise<any | null>;
+   onFinish: () => void;
 }
 export class ForgotPasswordView extends Component<Props> {
    render() {
@@ -34,6 +35,8 @@ export class ForgotPasswordView extends Component<Props> {
                      const res = await this.props.submit(values);
                      if (res) {
                         actions.setErrors(res);
+                     } else {
+                        this.props.onFinish();
                      }
                   }}
                >

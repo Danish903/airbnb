@@ -40,6 +40,7 @@ interface Props {
    }: {
       data: FormValues;
    }) => Promise<{ [key: string]: string } | null>;
+   onFinish: () => void;
 }
 export class RegisterView extends Component<Props> {
    render() {
@@ -63,6 +64,8 @@ export class RegisterView extends Component<Props> {
                      console.log(res);
                      if (res) {
                         actions.setErrors(res);
+                     } else {
+                        this.props.onFinish();
                      }
                   }}
                >

@@ -5,6 +5,7 @@ import { RegisterConnector } from "../modules/register/RegisterConnector";
 import { LoginConnector } from "../modules/login/LoginConnector";
 import ForgotPasswordConnector from "../modules/forgotPassword/ForgotPasswordConnector";
 import ChangePasswordConnector from "../modules/changePassword/ChangePasswordConnector";
+import TextPage from "../modules/TextPage";
 
 export const Routes: React.FC<{}> = () => (
    <Router>
@@ -22,6 +23,7 @@ export const Routes: React.FC<{}> = () => (
             exact
             component={ChangePasswordConnector}
          />
+         <Route path="/m" component={TextPage} />
       </Switch>
    </Router>
 );

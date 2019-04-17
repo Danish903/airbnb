@@ -23,6 +23,7 @@ export interface data {
 interface Props {
    submit: ({ data }: { data: data }) => Promise<any | null>;
    token: string;
+   onFinish: () => void;
 }
 export class ChangePasswordView extends Component<Props> {
    render() {
@@ -44,6 +45,8 @@ export class ChangePasswordView extends Component<Props> {
                      console.log(res);
                      if (res) {
                         actions.setErrors(res);
+                     } else {
+                        this.props.onFinish();
                      }
                   }}
                >
