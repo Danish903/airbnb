@@ -67,4 +67,4 @@ class CreateListingResovler {
    }
 }
 
-export { CreateListingResovler as default };
+export { CreateListingResovler };

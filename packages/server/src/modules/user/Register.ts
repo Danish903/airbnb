@@ -36,4 +36,4 @@ class RegisterResolver {
    }
 }
 
-export { RegisterResolver as default };
+export { RegisterResolver };
