@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { Form, Button } from "antd";
-import { Formik } from "formik";
+import { Formik, FormikActions } from "formik";
 
 import { Page2 } from "./ui/Page2";
 import { Page1 } from "./ui/Page1";
 import { Page3 } from "./ui/Page3";
+import {
+   withCreateListingMutation,
+   NewPropsCreateListing,
+   CreateListingMutationVariables
+} from "@abb/controller/dist";
+import { fromValue } from "long";
 
 export interface FormValues {
    name: string;
@@ -16,20 +22,21 @@ export interface FormValues {
    latitude: number;
    longitude: number;
    amenities: String[];
+   pictureURL?: string;
 }
 interface Props {
-   submit: ({
-      data
-   }: {
-      data: FormValues;
-   }) => Promise<{ [key: string]: string } | null>;
+   // submit: ({
+   //    data
+   // }: {
+   //    data: FormValues;
+   // }) => Promise<{ [key: string]: string } | null>;
    onFinish: () => void;
 }
 interface State {
    page: number;
 }
 const Pages = [<Page1 />, <Page2 />, <Page3 />];
-export class CreateListingConnector extends Component<Props, State> {
+class C extends Component<Props & NewPropsCreateListing, State> {
    state = {
       page: 0
    };
@@ -53,19 +60,29 @@ export class CreateListingConnector extends Component<Props, State> {
                      longitude: 0,
                      amenities: []
                   }}
-                  onSubmit={async (values, actions) => {
-                     const data = values;
+                  onSubmit={async (
+                     values: FormValues,
+                     { setSubmitting }: FormikActions<FormValues>
+                  ) => {
+                     const data = {
+                        data: values
+                     } as CreateListingMutationVariables;
 
-                     console.log({ data });
+                     await this.props.createListing(data);
+                     setSubmitting(false);
                   }}
                >
-                  {({ handleSubmit }) => (
+                  {({ handleSubmit, isSubmitting }) => (
                      <Form className="login-form" onSubmit={handleSubmit}>
                         {Pages[this.state.page]}
 
                         {this.state.page === Pages.length - 1 ? (
                            <Form.Item>
-                              <Button type="primary" htmlType="submit">
+                              <Button
+                                 type="primary"
+                                 htmlType="submit"
+                                 disabled={isSubmitting}
+                              >
                                  Create a listing
                               </Button>
                            </Form.Item>
@@ -87,3 +104,5 @@ export class CreateListingConnector extends Component<Props, State> {
       );
    }
 }
+
+export const CreateListingConnector = withCreateListingMutation(C);

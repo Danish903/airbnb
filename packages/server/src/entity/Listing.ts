@@ -24,7 +24,7 @@ export class Listing extends BaseEntity {
    category: string;
 
    @Field()
-   @Column("text")
+   @Column("text", { nullable: true })
    pictureURL: string;
 
    @Field()

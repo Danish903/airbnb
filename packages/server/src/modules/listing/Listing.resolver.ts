@@ -29,7 +29,7 @@ class CreateListingResovler {
 
    @UseMiddleware(isAuth)
    @Mutation(() => Boolean)
-   async createListingResolver(
+   async createListing(
       @Arg("data")
       data: ListingInput,
       @Ctx() ctx: MyContext

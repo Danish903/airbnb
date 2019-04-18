@@ -8,7 +8,7 @@ import {
 import { ObjectType, Field, ID, Root, Ctx } from "type-graphql";
 import { AuthorBook } from "./AuthorBook";
 import { Book } from "./Book";
-import { MyContext } from "src/types/MyContext";
+import { MyContext } from "../types/MyContext";
 import { Listing } from "./Listing";
 
 @ObjectType()

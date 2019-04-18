@@ -50,7 +50,7 @@ export type ListingInput = {
 };
 
 export type Mutation = {
-  createListingResolver: Scalars["Boolean"];
+  createListing: Scalars["Boolean"];
   deleteListing: Scalars["Boolean"];
   confirmUser?: Maybe<Scalars["Boolean"]>;
   changePassword?: Maybe<User>;
@@ -61,7 +61,7 @@ export type Mutation = {
   register: User;
 };
 
-export type MutationCreateListingResolverArgs = {
+export type MutationCreateListingArgs = {
   data: ListingInput;
 };
 
@@ -120,6 +120,15 @@ export type User = {
   userListings: Array<Listing>;
   books: Array<Book>;
 };
+export type CreateListingMutationVariables = {
+  data: ListingInput;
+};
+
+export type CreateListingMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "createListing"
+>;
+
 export type ChangePassowrdMutationVariables = {
   data: ChangePasswordInput;
 };
@@ -172,6 +181,57 @@ import gql from "graphql-tag";
 import * as React from "react";
 import * as ReactApollo from "react-apollo";
 
+export const CreateListingDocument = gql`
+  mutation CreateListing($data: ListingInput!) {
+    createListing(data: $data)
+  }
+`;
+
+export class CreateListingComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateListingMutation,
+      CreateListingMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateListingMutation,
+        CreateListingMutationVariables
+      >
+        mutation={CreateListingDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type CreateListingProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<CreateListingMutation, CreateListingMutationVariables>
+> &
+  TChildProps;
+export type CreateListingMutationFn = ReactApollo.MutationFn<
+  CreateListingMutation,
+  CreateListingMutationVariables
+>;
+export function withCreateListing<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateListingMutation,
+        CreateListingMutationVariables,
+        CreateListingProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    CreateListingMutation,
+    CreateListingMutationVariables,
+    CreateListingProps<TChildProps>
+  >(CreateListingDocument, operationOptions);
+}
 export const ChangePassowrdDocument = gql`
   mutation ChangePassowrd($data: ChangePasswordInput!) {
     changePassword(data: $data) {
