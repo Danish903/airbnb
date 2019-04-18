@@ -8,7 +8,7 @@ import { LoginConnector } from "../modules/login/LoginConnector";
 import ForgotPasswordConnector from "../modules/forgotPassword/ForgotPasswordConnector";
 import ChangePasswordConnector from "../modules/changePassword/ChangePasswordConnector";
 import TextPage from "../modules/TextPage";
-import createListingConnector from "../modules/listing/create/createListingConnector";
+import { CreateListingConnector } from "../modules/listing/create/createListingConnector";
 
 export const Routes: React.FC<{}> = () => (
    <Router>
@@ -26,7 +26,7 @@ export const Routes: React.FC<{}> = () => (
             exact
             component={ChangePasswordConnector}
          />
-         <AuthRoute path="/create-listing" component={createListingConnector} />
+         <AuthRoute path="/create-listing" component={CreateListingConnector} />
          <Route path="/m" component={TextPage} />
       </Switch>
    </Router>
