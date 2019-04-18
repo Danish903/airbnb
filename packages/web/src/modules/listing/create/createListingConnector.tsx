@@ -56,13 +56,7 @@ export class CreateListingConnector extends Component<Props, State> {
                   onSubmit={async (values, actions) => {
                      const data = values;
 
-                     const res = await this.props.submit({ data });
-                     console.log(res);
-                     if (res) {
-                        actions.setErrors(res);
-                     } else {
-                        this.props.onFinish();
-                     }
+                     console.log({ data });
                   }}
                >
                   {({ handleSubmit }) => (

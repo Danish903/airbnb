@@ -1,9 +1,9 @@
 import React from "react";
 import { FieldProps } from "formik";
-import { Form, Input, InputNumber } from "antd";
+import { Form, Input, InputNumber, Select } from "antd";
 
-export const InputField = ({
-   field: { onChange, ...field }, // { name, value, onChange, onBlur }
+export const TagField = ({
+   field: { onChange, onBlur: _, ...field }, // { name, value, onChange, onBlur }
    form: { touched, errors, setFieldValue }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
    label,
    useNumberComponent = false,
@@ -17,14 +17,13 @@ export const InputField = ({
          help={isError ? errors[field.name] : ""}
          validateStatus={isError ? "error" : ""}
       >
-         <Comp
+         <Select
             {...field}
             {...props}
-            onChange={
-               useNumberComponent
-                  ? (newValue: any) => setFieldValue(field.name, newValue)
-                  : onChange
-            }
+            mode="tags"
+            style={{ width: "100%" }}
+            // defaultValue={["a10", "c12"]}
+            onChange={(newValue: any) => setFieldValue(field.name, newValue)}
          />
       </Form.Item>
    );

@@ -23,7 +23,10 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "skipLibCheck": true,
-      "baseUrl": ".",
+      "baseUrl": "..",
+      "paths": {
+         "@abb/*": ["./*/src"]
+      },
       "rootDir": "src"
    },
    "exclude": ["node_modules"],
