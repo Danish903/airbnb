@@ -1,18 +1,12 @@
 import { buildSchema } from "type-graphql";
-import { ConfrimUserResolver } from "../modules/user/ConfirmUser";
-import { CreateListingResovler } from "../modules/listing/ListingResolver";
-import { RegisterResolver } from "../modules/user/Register";
-import MeResolver from "../modules/user/Me";
-import LoginResolver from "../modules/user/Login";
+// import { ConfrimUserResolver } from "../modules/user/ConfirmUser";
+// import { CreateListingResovler } from "../modules/listing/ListingResolver";
+// import { RegisterResolver } from "../modules/user/Register";
+// import MeResolver from "../modules/user/Me";
+// import LoginResolver from "../modules/user/Login";
 export const createSchema = async () =>
    await buildSchema({
-      resolvers: [
-         MeResolver,
-         ConfrimUserResolver,
-         CreateListingResovler,
-         RegisterResolver,
-         LoginResolver
-      ],
+      resolvers: [__dirname + "/../modules/**/*.resolver.{ts,js}"],
       authChecker: ({ context: { req } }) =>
          // here you can read user from context
          // and check his permission in db against `roles` argument
