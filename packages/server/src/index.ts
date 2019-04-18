@@ -20,18 +20,7 @@ import {
 
 const main = async () => {
    try {
-      await createConnection({
-         name: "default",
-         type: "postgres",
-         host: "localhost",
-         port: 5432,
-         username: "anishdhungel",
-         password: "postgres",
-         database: "typegraphql-example",
-         synchronize: true,
-         logging: true,
-         entities: ["dist/entity/*.*"]
-      });
+      await createConnection();
    } catch (error) {
       console.log("PSQL connection failed");
    }

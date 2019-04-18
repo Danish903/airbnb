@@ -21,25 +21,52 @@ export type ChangePasswordInput = {
   token: Scalars["String"];
 };
 
+export type Listing = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  category: Scalars["String"];
+  pictureURL: Scalars["String"];
+  description: Scalars["String"];
+  price: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  guests: Scalars["Int"];
+  beds: Scalars["Int"];
+  amenities: Array<Scalars["String"]>;
+  owner: User;
+};
+
+export type ListingInput = {
+  name: Scalars["String"];
+  category: Scalars["String"];
+  pictureURL?: Maybe<Scalars["String"]>;
+  description: Scalars["String"];
+  price: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  guests: Scalars["Int"];
+  beds: Scalars["Int"];
+  amenities: Array<Scalars["String"]>;
+};
+
 export type Mutation = {
-  createBook: Book;
-  createAuthorBook: Scalars["Boolean"];
+  createListingResolver: Scalars["Boolean"];
+  deleteListing: Scalars["Boolean"];
   confirmUser?: Maybe<Scalars["Boolean"]>;
   changePassword?: Maybe<User>;
   forgotPassword?: Maybe<Scalars["Boolean"]>;
   logout: Scalars["Boolean"];
-  createUser: User;
   login?: Maybe<User>;
   addProfilePicture: Scalars["Boolean"];
   register: User;
 };
 
-export type MutationCreateBookArgs = {
-  name: Scalars["String"];
+export type MutationCreateListingResolverArgs = {
+  data: ListingInput;
 };
 
-export type MutationCreateAuthorBookArgs = {
-  name: Scalars["String"];
+export type MutationDeleteListingArgs = {
+  listingId: Scalars["String"];
 };
 
 export type MutationConfirmUserArgs = {
@@ -52,10 +79,6 @@ export type MutationChangePasswordArgs = {
 
 export type MutationForgotPasswordArgs = {
   email: Scalars["String"];
-};
-
-export type MutationCreateUserArgs = {
-  data: RegisterInput;
 };
 
 export type MutationLoginArgs = {
@@ -76,9 +99,9 @@ export type PasswordInput = {
 };
 
 export type Query = {
-  books: Array<Book>;
-  me?: Maybe<User>;
   helloWorld: Scalars["String"];
+  findListings: Array<Listing>;
+  me?: Maybe<User>;
 };
 
 export type RegisterInput = {
@@ -94,6 +117,7 @@ export type User = {
   lastName: Scalars["String"];
   email: Scalars["String"];
   name: Scalars["String"];
+  userListings: Array<Listing>;
   books: Array<Book>;
 };
 export type ChangePassowrdMutationVariables = {
@@ -136,6 +160,12 @@ export type RegisterMutation = { __typename?: "Mutation" } & {
     User,
     "id" | "firstName" | "lastName" | "email" | "name"
   >;
+};
+
+export type MeQueryVariables = {};
+
+export type MeQuery = { __typename?: "Query" } & {
+  me: Maybe<{ __typename?: "User" } & Pick<User, "name" | "email">>;
 };
 
 import gql from "graphql-tag";
@@ -351,4 +381,46 @@ export function withRegister<TProps, TChildProps = {}>(
     RegisterMutationVariables,
     RegisterProps<TChildProps>
   >(RegisterDocument, operationOptions);
+}
+export const MeDocument = gql`
+  query Me {
+    me {
+      name
+      email
+    }
+  }
+`;
+
+export class MeComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<MeQuery, MeQueryVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<MeQuery, MeQueryVariables>
+        query={MeDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type MeProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<MeQuery, MeQueryVariables>
+> &
+  TChildProps;
+export function withMe<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        MeQuery,
+        MeQueryVariables,
+        MeProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    MeQuery,
+    MeQueryVariables,
+    MeProps<TChildProps>
+  >(MeDocument, operationOptions);
 }

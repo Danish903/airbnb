@@ -3,7 +3,7 @@ import { In } from "typeorm";
 import { User } from "../entity/User";
 import { AuthorBook } from "../entity/AuthorBook";
 import { Book } from "../entity/Book";
-import { Listing } from "../entity/Listing";
+// import { Listing } from "../entity/Listing";
 
 const batchAuthors = async (bookIds: string[]) => {
    const authorBooks = await AuthorBook.find({
@@ -88,16 +88,16 @@ const batchListings = async (userIds: string[]) => {
 
    console.log(userIds);
 
-   const userListings = await Listing.find({
-      join: {
-         alias: "userListing",
-         innerJoinAndSelect: {
-            user: "userListing.user"
-         }
-      },
+   // const userListings = await Listing.find({
+   //    join: {
+   //       alias: "userListing",
+   //       innerJoinAndSelect: {
+   //          user: "userListing.user"
+   //       }
+   //    },
 
-      where: { userId: In(userIds) }
-   });
+   //    where: { userId: In(userIds) }
+   // });
    // console.log(userListings);
    // const authorBooks = await AuthorBook.find({
    //    join: {
@@ -138,14 +138,14 @@ const batchListings = async (userIds: string[]) => {
 
    // return userIds.map(userId => bookIdToAuthors[userId]);
 
-   const listingMap: { [key: string]: Listing } = {};
-   // console.log(userListings);
-   userListings.forEach(listing => {
-      listingMap[listing.userId] = listing;
-   });
+   // const listingMap: { [key: string]: Listing } = {};
+   // // console.log(userListings);
+   // userListings.forEach(listing => {
+   //    listingMap[listing.userId] = listing;
+   // });
 
-   console.log(listingMap);
-   return userIds.map(userId => listingMap[userId]);
+   // console.log(listingMap);
+   return [];
 };
 
 export const createListingsLoader = () => new DataLoader(batchListings);
