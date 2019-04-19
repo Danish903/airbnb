@@ -48,7 +48,7 @@ export class User extends BaseEntity {
 
    @Field(() => [Listing])
    async userListings(@Root() parent: User): Promise<Listing[]> {
-      return await await Listing.find({
+      return await Listing.find({
          where: { userId: parent.id }
       });
    }

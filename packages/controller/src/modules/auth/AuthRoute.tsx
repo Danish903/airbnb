@@ -15,7 +15,14 @@ class C extends React.Component<ChildProps<Props, MeQuery>> {
       }
       if (!data.me) {
          // user not logged in
-         return <Redirect to="/login" />;
+         return (
+            <Redirect
+               to={{
+                  pathname: "/login",
+                  state: { next: routeProps.location.pathname }
+               }}
+            />
+         );
       }
       const Component = component as any;
       return <Component {...routeProps} />;

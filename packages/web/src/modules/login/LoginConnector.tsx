@@ -5,9 +5,13 @@ import { RouteComponentProps } from "react-router";
 
 export class LoginConnector extends Component<RouteComponentProps<{}>> {
    onFinish = () => {
-      this.props.history.push("/");
+      const nextPage = this.props.location.state
+         ? this.props.location.state.next
+         : "/";
+      this.props.history.push(nextPage);
    };
    render() {
+      console.log(this.props);
       return (
          <LoginController>
             {({ submit }: { submit: any }) => (
