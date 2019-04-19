@@ -7,11 +7,30 @@ import {
    Ctx
 } from "type-graphql";
 
+import shortid from "shortid";
+
 import { isAuth } from "../middleware/isAuth";
 import { ListingInput } from "./listingInput/listingInput";
 import { MyContext } from "../../types/MyContext";
 import { Listing } from "../../entity/Listing";
+import { GraphQLUpload } from "graphql-upload";
+import { Upload } from "../../types/Upload";
+import { createWriteStream } from "fs";
+import { Stream } from "stream";
 
+const processUpload = async (
+   filename: string,
+   createReadStream: () => Stream
+): Promise<{ id: string; path: string }> => {
+   const id = shortid.generate();
+   const path = __dirname + `/../../../images/${id}-${filename}`;
+   return new Promise(async (res, rej) =>
+      createReadStream()
+         .pipe(createWriteStream(path))
+         .on("finish", () => res({ id, path }))
+         .on("error", () => rej({ id: "", path: "" }))
+   );
+};
 @Resolver()
 class CreateListingResovler {
    @UseMiddleware(isAuth)
@@ -23,8 +42,6 @@ class CreateListingResovler {
    @Query(() => [Listing])
    async findListings(): Promise<Listing[]> {
       return Listing.find();
-      // console.log(listings);
-      // return listings;
    }
 
    @UseMiddleware(isAuth)
@@ -32,11 +49,18 @@ class CreateListingResovler {
    async createListing(
       @Arg("data")
       data: ListingInput,
-      @Ctx() ctx: MyContext
+      @Arg("file", () => GraphQLUpload, { nullable: true })
+      { filename, createReadStream }: Upload,
+      @Ctx()
+      ctx: MyContext
    ): Promise<Boolean> {
       const user = ctx.req.session!.userId;
+
+      const { path } = await processUpload(filename, createReadStream);
+
       await Listing.create({
          ...data,
+         pictureURL: path,
          userId: user
       }).save();
       return true;
@@ -60,8 +84,6 @@ class CreateListingResovler {
       } catch (error) {
          throw new Error(error);
       }
-
-      console.log(user);
 
       return true;
    }

@@ -10,7 +10,7 @@ import {
    NewPropsCreateListing,
    CreateListingMutationVariables
 } from "@abb/controller/dist";
-import { fromValue } from "long";
+// import { ImageFile } from "react-dropzone";
 
 export interface FormValues {
    name: string;
@@ -23,6 +23,7 @@ export interface FormValues {
    longitude: number;
    amenities: String[];
    pictureURL?: string;
+   file?: File | null;
 }
 interface Props {
    // submit: ({
@@ -58,21 +59,25 @@ class C extends Component<Props & NewPropsCreateListing, State> {
                      guests: 0,
                      latitude: 0,
                      longitude: 0,
-                     amenities: []
+                     amenities: [],
+                     file: null
                   }}
                   onSubmit={async (
                      values: FormValues,
                      { setSubmitting }: FormikActions<FormValues>
                   ) => {
+                     const file = values.file;
+                     delete values.file;
                      const data = {
-                        data: values
+                        data: values,
+                        file
                      } as CreateListingMutationVariables;
 
                      await this.props.createListing(data);
                      setSubmitting(false);
                   }}
                >
-                  {({ handleSubmit, isSubmitting }) => (
+                  {({ values, handleSubmit, isSubmitting }) => (
                      <Form className="login-form" onSubmit={handleSubmit}>
                         {Pages[this.state.page]}
 

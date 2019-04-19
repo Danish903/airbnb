@@ -11,7 +11,6 @@ export class LoginConnector extends Component<RouteComponentProps<{}>> {
       this.props.history.push(nextPage);
    };
    render() {
-      console.log(this.props);
       return (
          <LoginController>
             {({ submit }: { submit: any }) => (

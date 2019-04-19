@@ -23,9 +23,9 @@ export class Listing extends BaseEntity {
    @Column("varchar", { length: 100 })
    category: string;
 
-   @Field()
+   @Field({ nullable: true })
    @Column("text", { nullable: true })
-   pictureURL: string;
+   pictureURL?: string;
 
    @Field()
    @Column("varchar", { length: 255 })

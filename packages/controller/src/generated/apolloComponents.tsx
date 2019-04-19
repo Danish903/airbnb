@@ -62,6 +62,7 @@ export type Mutation = {
 };
 
 export type MutationCreateListingArgs = {
+  file?: Maybe<Scalars["Upload"]>;
   data: ListingInput;
 };
 
@@ -122,6 +123,7 @@ export type User = {
 };
 export type CreateListingMutationVariables = {
   data: ListingInput;
+  file?: Maybe<Scalars["Upload"]>;
 };
 
 export type CreateListingMutation = { __typename?: "Mutation" } & Pick<
@@ -182,8 +184,8 @@ import * as React from "react";
 import * as ReactApollo from "react-apollo";
 
 export const CreateListingDocument = gql`
-  mutation CreateListing($data: ListingInput!) {
-    createListing(data: $data)
+  mutation CreateListing($data: ListingInput!, $file: Upload) {
+    createListing(data: $data, file: $file)
   }
 `;
 
