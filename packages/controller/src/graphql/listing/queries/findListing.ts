@@ -6,7 +6,7 @@ export const FIND_LISTINGS_QUERY = gql`
          id
          name
          category
-         pictureURL
+         imageURL
          description
          price
          latitude

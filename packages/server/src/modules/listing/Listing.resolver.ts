@@ -21,14 +21,16 @@ import { Stream } from "stream";
 const processUpload = async (
    filename: string,
    createReadStream: () => Stream
-): Promise<{ id: string; path: string }> => {
+): Promise<{ id: string; path: string; imageName: string }> => {
    const id = shortid.generate();
-   const path = __dirname + `/../../../images/${id}-${filename}`;
+   const imageName = `${id}-${filename}`;
+   const path = __dirname + `/../../../images/${imageName}`;
+
    return new Promise(async (res, rej) =>
       createReadStream()
          .pipe(createWriteStream(path))
-         .on("finish", () => res({ id, path }))
-         .on("error", () => rej({ id: "", path: "" }))
+         .on("finish", () => res({ id, path, imageName }))
+         .on("error", () => rej({ id: "", path: "", imageName: "" }))
    );
 };
 @Resolver()
@@ -56,11 +58,11 @@ class CreateListingResovler {
    ): Promise<Boolean> {
       const user = ctx.req.session!.userId;
 
-      const { path } = await processUpload(filename, createReadStream);
+      const { imageName } = await processUpload(filename, createReadStream);
 
       await Listing.create({
          ...data,
-         pictureURL: path,
+         pictureURL: imageName,
          userId: user
       }).save();
       return true;

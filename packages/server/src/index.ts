@@ -13,6 +13,7 @@ import {
    createBooksLoader,
    createListingsLoader
 } from "./utilities/authorsLoader";
+
 // import queryComplexity, {
 //    fieldConfigEstimator,
 //    simpleEstimator
@@ -43,7 +44,8 @@ const main = async () => {
          res,
          authorsLoader: createAuthorsLoader(),
          booksLoader: createBooksLoader(),
-         listingsLoader: createListingsLoader()
+         listingsLoader: createListingsLoader(),
+         url: req.protocol + "://" + req.get("host")
       }),
 
       validationRules: [
@@ -73,6 +75,9 @@ const main = async () => {
    });
 
    const app = express();
+
+   app.use("/images", express.static("images"));
+
    const RedisStore = connectRedis(session);
    app.use(
       cors({

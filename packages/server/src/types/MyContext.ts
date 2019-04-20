@@ -11,4 +11,5 @@ export interface MyContext {
    authorsLoader: ReturnType<typeof createAuthorsLoader>;
    booksLoader: ReturnType<typeof createBooksLoader>; ///</typeof>
    listingsLoader: ReturnType<typeof createListingsLoader>;
+   url: string;
 }

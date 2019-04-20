@@ -10,7 +10,6 @@ export class F extends Component<WithFindListingsQueryType> {
    render() {
       const { listings, loading } = this.props;
       if (loading) return <div>Loading...</div>;
-
       return (
          <>
             {listings.map(listing => (
@@ -18,12 +17,7 @@ export class F extends Component<WithFindListingsQueryType> {
                   key={listing.id}
                   hoverable
                   style={{ width: 240 }}
-                  cover={
-                     <img
-                        alt="example"
-                        src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                     />
-                  }
+                  cover={<img alt="example" src={listing.imageURL} />}
                >
                   <Meta
                      title={listing.name}

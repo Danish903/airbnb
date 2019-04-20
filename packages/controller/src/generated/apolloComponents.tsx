@@ -34,6 +34,7 @@ export type Listing = {
   beds: Scalars["Int"];
   amenities: Array<Scalars["String"]>;
   owner: User;
+  imageURL: Scalars["String"];
 };
 
 export type ListingInput = {
@@ -140,7 +141,7 @@ export type FindListingsQuery = { __typename?: "Query" } & {
       | "id"
       | "name"
       | "category"
-      | "pictureURL"
+      | "imageURL"
       | "description"
       | "price"
       | "latitude"
@@ -261,7 +262,7 @@ export const FindListingsDocument = gql`
       id
       name
       category
-      pictureURL
+      imageURL
       description
       price
       latitude

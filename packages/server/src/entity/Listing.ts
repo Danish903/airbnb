@@ -5,8 +5,9 @@ import {
    Column,
    ManyToOne
 } from "typeorm";
-import { ObjectType, Field, ID, Float, Int, Root } from "type-graphql";
+import { ObjectType, Field, ID, Float, Int, Root, Ctx } from "type-graphql";
 import { User } from "./User";
+import { MyContext } from "../types/MyContext";
 
 @ObjectType()
 @Entity() // listings table name for the db
@@ -57,12 +58,16 @@ export class Listing extends BaseEntity {
    // @Field(() => ID)
    @Column("uuid")
    userId: string;
-   @ManyToOne(() => User, user => user.listings)
+   @ManyToOne(() => User, user => user.listings, { onDelete: "CASCADE" })
    user: User;
 
    @Field(() => User)
    async owner(@Root() parent: Listing): Promise<User> {
       const user = await User.findOne(parent.userId);
       return user!;
+   }
+   @Field()
+   imageURL(@Root() parent: Listing, @Ctx() ctx: MyContext): string {
+      return `${ctx.url}/images/${parent.pictureURL}`;
    }
 }
