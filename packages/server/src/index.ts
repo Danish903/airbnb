@@ -45,6 +45,7 @@ const main = async () => {
          booksLoader: createBooksLoader(),
          listingsLoader: createListingsLoader()
       }),
+
       validationRules: [
          // queryComplexity({
          //    // The maximum allowed query complexity, queries above this threshold will be rejected

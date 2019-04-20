@@ -25,7 +25,7 @@ export type Listing = {
   id: Scalars["ID"];
   name: Scalars["String"];
   category: Scalars["String"];
-  pictureURL: Scalars["String"];
+  pictureURL?: Maybe<Scalars["String"]>;
   description: Scalars["String"];
   price: Scalars["Int"];
   latitude: Scalars["Float"];
@@ -131,6 +131,27 @@ export type CreateListingMutation = { __typename?: "Mutation" } & Pick<
   "createListing"
 >;
 
+export type FindListingsQueryVariables = {};
+
+export type FindListingsQuery = { __typename?: "Query" } & {
+  findListings: Array<
+    { __typename?: "Listing" } & Pick<
+      Listing,
+      | "id"
+      | "name"
+      | "category"
+      | "pictureURL"
+      | "description"
+      | "price"
+      | "latitude"
+      | "longitude"
+      | "guests"
+      | "beds"
+      | "amenities"
+    >
+  >;
+};
+
 export type ChangePassowrdMutationVariables = {
   data: ChangePasswordInput;
 };
@@ -233,6 +254,57 @@ export function withCreateListing<TProps, TChildProps = {}>(
     CreateListingMutationVariables,
     CreateListingProps<TChildProps>
   >(CreateListingDocument, operationOptions);
+}
+export const FindListingsDocument = gql`
+  query FindListings {
+    findListings {
+      id
+      name
+      category
+      pictureURL
+      description
+      price
+      latitude
+      longitude
+      guests
+      beds
+      amenities
+    }
+  }
+`;
+
+export class FindListingsComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<FindListingsQuery, FindListingsQueryVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<FindListingsQuery, FindListingsQueryVariables>
+        query={FindListingsDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type FindListingsProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<FindListingsQuery, FindListingsQueryVariables>
+> &
+  TChildProps;
+export function withFindListings<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        FindListingsQuery,
+        FindListingsQueryVariables,
+        FindListingsProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    FindListingsQuery,
+    FindListingsQueryVariables,
+    FindListingsProps<TChildProps>
+  >(FindListingsDocument, operationOptions);
 }
 export const ChangePassowrdDocument = gql`
   mutation ChangePassowrd($data: ChangePasswordInput!) {
