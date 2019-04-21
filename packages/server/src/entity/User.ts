@@ -43,8 +43,6 @@ export class User extends BaseEntity {
    @OneToMany(() => AuthorBook, ab => ab.user)
    bookConnection: Promise<AuthorBook[]>;
 
-   @Column("uuid", { array: true, nullable: true })
-   listingIds: string;
    @OneToMany(() => Listing, listing => listing.user)
    listings: Listing[];
 

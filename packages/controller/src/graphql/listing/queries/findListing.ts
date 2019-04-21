@@ -14,6 +14,10 @@ export const FIND_LISTINGS_QUERY = gql`
          guests
          beds
          amenities
+         owner {
+            id
+            email
+         }
       }
    }
 `;

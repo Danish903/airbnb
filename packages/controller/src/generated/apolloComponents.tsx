@@ -149,7 +149,7 @@ export type FindListingsQuery = { __typename?: "Query" } & {
       | "guests"
       | "beds"
       | "amenities"
-    >
+    > & { owner: { __typename?: "User" } & Pick<User, "id" | "email"> }
   >;
 };
 
@@ -270,6 +270,10 @@ export const FindListingsDocument = gql`
       guests
       beds
       amenities
+      owner {
+        id
+        email
+      }
     }
   }
 `;

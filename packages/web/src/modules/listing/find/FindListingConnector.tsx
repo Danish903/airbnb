@@ -10,6 +10,7 @@ export class F extends Component<WithFindListingsQueryType> {
    render() {
       const { listings, loading } = this.props;
       if (loading) return <div>Loading...</div>;
+      console.log(listings);
       return (
          <>
             {listings.map(listing => (
@@ -21,7 +22,7 @@ export class F extends Component<WithFindListingsQueryType> {
                >
                   <Meta
                      title={listing.name}
-                     description={listing.description}
+                     description={listing.owner.email}
                   />
                </Card>
             ))}
