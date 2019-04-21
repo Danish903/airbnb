@@ -5,7 +5,7 @@ import { createConnection } from "typeorm";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
-
+import http from "http";
 import { redis } from "./redis";
 import { createSchema } from "./utilities/createSchema";
 import {
@@ -47,8 +47,12 @@ const main = async () => {
          booksLoader: createBooksLoader(),
          listingsLoader: createListingsLoader(),
          usersLoader: createUserLoader(),
-         url: req.protocol + "://" + req.get("host")
+         url: req ? req.protocol + "://" + req.get("host") : ""
       }),
+      playground: true,
+      subscriptions: {
+         onConnect: () => console.log("Connected to websocket")
+      },
 
       validationRules: [
          // queryComplexity({
@@ -107,10 +111,19 @@ const main = async () => {
 
    server.applyMiddleware({ app, cors: false });
 
-   app.listen({ port: process.env.PORT || 4000 }, () =>
+   const httpServer = http.createServer(app);
+   server.installSubscriptionHandlers(httpServer);
+
+   const PORT = process.env.PORT || 4000;
+   httpServer.listen(PORT, () => {
       console.log(
-         `🚀 Server ready at http://localhost:4000${server.graphqlPath}`
-      )
-   );
+         `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+      );
+      console.log(
+         `🚀 Subscriptions ready at ws://localhost:${PORT}${
+            server.subscriptionsPath
+         }`
+      );
+   });
 };
 main();

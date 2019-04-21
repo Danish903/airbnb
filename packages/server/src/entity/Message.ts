@@ -32,8 +32,7 @@ export class Message extends BaseEntity {
    listing: Listing;
 
    @Field(() => User)
-   async sender(@Root() parent: Listing, @Ctx() ctx: MyContext): Promise<User> {
-      // const user = await User.findOne(parent.userId);
+   async sender(@Root() parent: Message, @Ctx() ctx: MyContext): Promise<User> {
       return await ctx.usersLoader.load(parent.userId);
    }
 }
