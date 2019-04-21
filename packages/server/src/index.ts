@@ -13,6 +13,7 @@ import {
    createBooksLoader,
    createListingsLoader
 } from "./utilities/authorsLoader";
+import { createUserLoader } from "./utilities/userLoader";
 
 // import queryComplexity, {
 //    fieldConfigEstimator,
@@ -45,6 +46,7 @@ const main = async () => {
          authorsLoader: createAuthorsLoader(),
          booksLoader: createBooksLoader(),
          listingsLoader: createListingsLoader(),
+         usersLoader: createUserLoader(),
          url: req.protocol + "://" + req.get("host")
       }),
 

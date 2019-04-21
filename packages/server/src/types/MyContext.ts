@@ -4,6 +4,7 @@ import {
    createBooksLoader,
    createListingsLoader
 } from "../utilities/authorsLoader";
+import { createUserLoader } from "../utilities/userLoader";
 
 export interface MyContext {
    req: Request;
@@ -11,5 +12,6 @@ export interface MyContext {
    authorsLoader: ReturnType<typeof createAuthorsLoader>;
    booksLoader: ReturnType<typeof createBooksLoader>; ///</typeof>
    listingsLoader: ReturnType<typeof createListingsLoader>;
+   usersLoader: ReturnType<typeof createUserLoader>;
    url: string;
 }

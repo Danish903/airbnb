@@ -62,9 +62,9 @@ export class Listing extends BaseEntity {
    user: User;
 
    @Field(() => User)
-   async owner(@Root() parent: Listing): Promise<User> {
-      const user = await User.findOne(parent.userId);
-      return user!;
+   async owner(@Root() parent: Listing, @Ctx() ctx: MyContext): Promise<User> {
+      // const user = await User.findOne(parent.userId);
+      return await ctx.usersLoader.load(parent.userId);
    }
    @Field()
    imageURL(@Root() parent: Listing, @Ctx() ctx: MyContext): string {
