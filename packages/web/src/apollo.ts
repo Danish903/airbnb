@@ -1,5 +1,5 @@
-import { ApolloClient, InMemoryCache } from "apollo-boost";
-
+import { ApolloClient } from "apollo-boost";
+import { InMemoryCache } from "apollo-cache-inmemory";
 import { createUploadLink } from "apollo-upload-client";
 
 // const client = new ApolloClient({

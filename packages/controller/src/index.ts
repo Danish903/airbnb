@@ -6,3 +6,4 @@ export * from "./modules/auth/AuthRoute";
 export * from "./generated/apolloComponents";
 export * from "./modules/CreateListing";
 export * from "./modules/FindListing";
+export * from "./modules/LogoutController";

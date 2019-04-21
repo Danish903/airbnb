@@ -10,6 +10,7 @@ import {
    NewPropsCreateListing,
    CreateListingMutationVariables
 } from "@abb/controller/dist";
+import { Link } from "react-router-dom";
 // import { ImageFile } from "react-dropzone";
 
 export interface FormValues {
@@ -46,6 +47,7 @@ class C extends Component<Props & NewPropsCreateListing, State> {
    render() {
       return (
          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Link to="/logout"> Logout</Link>
             <div style={{ width: 500 }}>
                <Formik<FormValues>
                   validateOnChange={true}
