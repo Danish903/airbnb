@@ -8,17 +8,26 @@ import {
    PubSub,
    PubSubEngine,
    Resolver,
-   Root
+   Root,
+   ArgsType,
+   Field,
+   ID,
+   ResolverFilterData
 } from "type-graphql";
 import { MyContext } from "../../types/MyContext";
 import { Listing } from "../../entity/Listing";
 import { Message } from "../../entity/Message";
 import { isAuth } from "../middleware/isAuth";
-// import { User } from "server/src/entity/User";
 
 export interface NotificationPayload {
    id: string;
    text?: string;
+}
+
+@ArgsType()
+export class NewMessageArgs {
+   @Field(() => ID)
+   listingId: string;
 }
 
 const NEW_MESSAGE = "NEW_MESSAGE";
@@ -54,16 +63,24 @@ export class MessageResolver {
          text,
          userId
       }).save();
-
       await pubSub.publish(NEW_MESSAGE, message);
-
       return true;
    }
 
-   @Subscription(() => Message, { topics: NEW_MESSAGE })
+   @Subscription(() => Message, {
+      topics: NEW_MESSAGE,
+      filter: ({
+         payload,
+         args
+      }: ResolverFilterData<Message, NewMessageArgs>) => {
+         return payload.listingId === args.listingId;
+      }
+   })
    async newMessage(
       @Root()
-      message: Message
+      message: Message,
+      //@ts-ignore
+      @Arg("listingId") listingId: string
    ): Promise<Message> {
       return message;
    }
