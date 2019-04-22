@@ -17,6 +17,7 @@
       "express-session": "^1.15.6",
       "graphql": "^14.2.0",
       "graphql-query-complexity": "^0.2.3",
+      "graphql-redis-subscriptions": "^2.1.0",
       "graphql-subscriptions": "^1.1.0",
       "graphql-upload": "^8.0.4",
       "ioredis": "^4.9.0",

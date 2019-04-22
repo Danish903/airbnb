@@ -6,7 +6,9 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
 import http from "http";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 import { redis } from "./redis";
+import Redis from "ioredis";
 import { createSchema } from "./utilities/createSchema";
 import {
    createAuthorsLoader,
@@ -20,13 +22,20 @@ import { createUserLoader } from "./utilities/userLoader";
 //    simpleEstimator
 // } from "graphql-query-complexity";
 
+const REDIS_HOST = "127.0.0.1";
+const REDIS_PORT = 6379;
+
 const main = async () => {
    try {
       await createConnection();
    } catch (error) {
       console.log("PSQL connection failed");
    }
-
+   const options: Redis.RedisOptions = {
+      host: REDIS_HOST,
+      port: REDIS_PORT,
+      retryStrategy: times => Math.max(times * 100, 3000)
+   };
    // const schema = await buildSchema({
    //    resolvers: [__dirname + "/modules/**/*.ts"],
    //    authChecker: ({ context: { req } }) =>
@@ -37,7 +46,10 @@ const main = async () => {
    // });
 
    const schema = await createSchema();
-
+   const pubSub = new RedisPubSub({
+      publisher: new Redis(options),
+      subscriber: new Redis(options)
+   });
    const server = new ApolloServer({
       schema,
       context: ({ req, res }: any) => ({
@@ -47,7 +59,8 @@ const main = async () => {
          booksLoader: createBooksLoader(),
          listingsLoader: createListingsLoader(),
          usersLoader: createUserLoader(),
-         url: req ? req.protocol + "://" + req.get("host") : ""
+         url: req ? req.protocol + "://" + req.get("host") : "",
+         pubSub
       }),
       playground: true,
       subscriptions: {

@@ -5,6 +5,7 @@ import {
    createListingsLoader
 } from "../utilities/authorsLoader";
 import { createUserLoader } from "../utilities/userLoader";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 
 export interface MyContext {
    req: Request;
@@ -14,4 +15,5 @@ export interface MyContext {
    listingsLoader: ReturnType<typeof createListingsLoader>;
    usersLoader: ReturnType<typeof createUserLoader>;
    url: string;
+   pubSub: RedisPubSub;
 }

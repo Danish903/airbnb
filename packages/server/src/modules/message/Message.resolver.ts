@@ -5,12 +5,12 @@ import {
    Ctx,
    UseMiddleware,
    Subscription,
-   PubSub,
-   PubSubEngine,
    Resolver,
    Root,
    ArgsType,
    Field,
+   PubSub,
+   PubSubEngine,
    ID,
    ResolverFilterData
 } from "type-graphql";
@@ -63,6 +63,7 @@ export class MessageResolver {
          text,
          userId
       }).save();
+
       await pubSub.publish(NEW_MESSAGE, message);
       return true;
    }
