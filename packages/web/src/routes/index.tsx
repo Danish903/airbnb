@@ -13,6 +13,7 @@ import { FindListingConnector } from "../modules/listing/find/FindListingConnect
 import Logout from "../modules/logout/Logout";
 import TestSub from "../modules/TestSub";
 import { ViewListingConnector } from "../modules/listing/view/ViewListingConnector";
+import MessageConnector from "../modules/listing/messages/MessageConnector";
 
 export const Routes: React.FC<{}> = () => (
    <Router>
@@ -33,7 +34,12 @@ export const Routes: React.FC<{}> = () => (
          <Route path="/logout" exact component={Logout} />
          <Route path="/test-sub" exact component={TestSub} />
          <Route path="/listings" component={FindListingConnector} />
-         <Route path="/listing/:listingId" component={ViewListingConnector} />
+         <Route
+            exact
+            path="/listing/:listingId"
+            component={ViewListingConnector}
+         />
+         <Route path="/listing/chat/:listingId" component={MessageConnector} />
 
          <AuthRoute path="/create-listing" component={CreateListingConnector} />
          <Route path="/m" component={TextPage} />

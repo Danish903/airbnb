@@ -4,6 +4,7 @@ import {
    ViewListingQueryComponent
 } from "@abb/controller/dist";
 import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
 
 export class ViewListingConnector extends Component<
    RouteComponentProps<{
@@ -22,7 +23,11 @@ export class ViewListingConnector extends Component<
             {data => {
                if (data.loading) return <p>loading....</p>;
                if (!data.listing) return <p>listing not found</p>;
-               return <p>{data.listing.name}</p>;
+               return (
+                  <Link to={`/listing/chat/${listingId}`}>
+                     <p>{data.listing.name}</p>
+                  </Link>
+               );
             }}
          </ViewListingQueryComponent>
       );

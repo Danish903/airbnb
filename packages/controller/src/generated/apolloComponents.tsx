@@ -208,6 +208,18 @@ export type GetListingQuery = { __typename?: "Query" } & {
   >;
 };
 
+export type FindMessagesQueryQueryVariables = {
+  listingId: Scalars["String"];
+};
+
+export type FindMessagesQueryQuery = { __typename?: "Query" } & {
+  findMessages: Array<
+    { __typename?: "Message" } & Pick<Message, "id" | "listingId" | "text"> & {
+        sender: { __typename?: "User" } & Pick<User, "id" | "email">;
+      }
+  >;
+};
+
 export type ChangePassowrdMutationVariables = {
   data: ChangePasswordInput;
 };
@@ -427,6 +439,61 @@ export function withGetListing<TProps, TChildProps = {}>(
     GetListingQueryVariables,
     GetListingProps<TChildProps>
   >(GetListingDocument, operationOptions);
+}
+export const FindMessagesQueryDocument = gql`
+  query FindMessagesQuery($listingId: String!) {
+    findMessages(listingId: $listingId) {
+      id
+      listingId
+      text
+      sender {
+        id
+        email
+      }
+    }
+  }
+`;
+
+export class FindMessagesQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      FindMessagesQueryQuery,
+      FindMessagesQueryQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<
+        FindMessagesQueryQuery,
+        FindMessagesQueryQueryVariables
+      >
+        query={FindMessagesQueryDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type FindMessagesQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<FindMessagesQueryQuery, FindMessagesQueryQueryVariables>
+> &
+  TChildProps;
+export function withFindMessagesQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        FindMessagesQueryQuery,
+        FindMessagesQueryQueryVariables,
+        FindMessagesQueryProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    FindMessagesQueryQuery,
+    FindMessagesQueryQueryVariables,
+    FindMessagesQueryProps<TChildProps>
+  >(FindMessagesQueryDocument, operationOptions);
 }
 export const ChangePassowrdDocument = gql`
   mutation ChangePassowrd($data: ChangePasswordInput!) {
