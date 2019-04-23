@@ -9,3 +9,4 @@ export * from "./modules/FindListing";
 export * from "./modules/LogoutController";
 export * from "./modules/ViewListing";
 export * from "./modules/ViewMessages";
+export * from "./modules/CreateMessage";

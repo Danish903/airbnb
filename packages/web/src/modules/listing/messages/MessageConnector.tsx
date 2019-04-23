@@ -1,12 +1,14 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import { ViewMessagesQueryComponent } from "@abb/controller/dist";
+import { InputBar } from "./InputBar";
 
 export default class MessageConnector extends React.Component<
    RouteComponentProps<{
       listingId: string;
    }>
 > {
+   unsubscribe!: () => void;
    render() {
       const {
          match: {
@@ -15,9 +17,11 @@ export default class MessageConnector extends React.Component<
       } = this.props;
       return (
          <ViewMessagesQueryComponent listingId={listingId}>
-            {({ messages, loading }) => {
+            {({ messages, loading, subscribe }) => {
                if (loading) return <p>loading...</p>;
-               console.log(messages);
+               if (!this.unsubscribe) {
+                  this.unsubscribe = subscribe();
+               }
                return (
                   <div>
                      <p>hello</p>
@@ -27,6 +31,7 @@ export default class MessageConnector extends React.Component<
                            <p>sent by: {message.sender.email}</p>
                         </div>
                      ))}
+                     <InputBar listingId={listingId} />
                   </div>
                );
             }}

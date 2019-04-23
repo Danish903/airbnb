@@ -6,6 +6,7 @@
    "license": "MIT",
    "scripts": {
       "build": "rimraf ./dist && tsc",
+      "watch": "tsc --watch",
       "generate": "graphql-codegen --config codegen.yml"
    },
    "dependencies": {

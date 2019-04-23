@@ -208,6 +208,16 @@ export type GetListingQuery = { __typename?: "Query" } & {
   >;
 };
 
+export type CreateMessageMutationMutationVariables = {
+  text: Scalars["String"];
+  listingId: Scalars["String"];
+};
+
+export type CreateMessageMutationMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "createMessage"
+>;
+
 export type FindMessagesQueryQueryVariables = {
   listingId: Scalars["String"];
 };
@@ -439,6 +449,60 @@ export function withGetListing<TProps, TChildProps = {}>(
     GetListingQueryVariables,
     GetListingProps<TChildProps>
   >(GetListingDocument, operationOptions);
+}
+export const CreateMessageMutationDocument = gql`
+  mutation CreateMessageMutation($text: String!, $listingId: String!) {
+    createMessage(text: $text, listingId: $listingId)
+  }
+`;
+
+export class CreateMessageMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateMessageMutationMutation,
+      CreateMessageMutationMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateMessageMutationMutation,
+        CreateMessageMutationMutationVariables
+      >
+        mutation={CreateMessageMutationDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type CreateMessageMutationProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    CreateMessageMutationMutation,
+    CreateMessageMutationMutationVariables
+  >
+> &
+  TChildProps;
+export type CreateMessageMutationMutationFn = ReactApollo.MutationFn<
+  CreateMessageMutationMutation,
+  CreateMessageMutationMutationVariables
+>;
+export function withCreateMessageMutation<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateMessageMutationMutation,
+        CreateMessageMutationMutationVariables,
+        CreateMessageMutationProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    CreateMessageMutationMutation,
+    CreateMessageMutationMutationVariables,
+    CreateMessageMutationProps<TChildProps>
+  >(CreateMessageMutationDocument, operationOptions);
 }
 export const FindMessagesQueryDocument = gql`
   query FindMessagesQuery($listingId: String!) {
