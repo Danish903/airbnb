@@ -50,9 +50,18 @@ export type ListingInput = {
   amenities: Array<Scalars["String"]>;
 };
 
+export type Message = {
+  id: Scalars["ID"];
+  text: Scalars["String"];
+  listingId: Scalars["String"];
+  sender: User;
+  mutation?: Maybe<Scalars["String"]>;
+};
+
 export type Mutation = {
   createListing: Scalars["Boolean"];
   deleteListing: Scalars["Boolean"];
+  createMessage: Scalars["Boolean"];
   confirmUser?: Maybe<Scalars["Boolean"]>;
   changePassword?: Maybe<User>;
   forgotPassword?: Maybe<Scalars["Boolean"]>;
@@ -68,6 +77,11 @@ export type MutationCreateListingArgs = {
 };
 
 export type MutationDeleteListingArgs = {
+  listingId: Scalars["String"];
+};
+
+export type MutationCreateMessageArgs = {
+  text: Scalars["String"];
   listingId: Scalars["String"];
 };
 
@@ -101,9 +115,19 @@ export type PasswordInput = {
 };
 
 export type Query = {
+  getListing?: Maybe<Listing>;
   helloWorld: Scalars["String"];
   findListings: Array<Listing>;
+  findMessages: Array<Message>;
   me?: Maybe<User>;
+};
+
+export type QueryGetListingArgs = {
+  listingId: Scalars["String"];
+};
+
+export type QueryFindMessagesArgs = {
+  listingId: Scalars["String"];
 };
 
 export type RegisterInput = {
@@ -111,6 +135,14 @@ export type RegisterInput = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   email: Scalars["String"];
+};
+
+export type Subscription = {
+  newMessage: Message;
+};
+
+export type SubscriptionNewMessageArgs = {
+  listingId: Scalars["ID"];
 };
 
 export type User = {
@@ -136,6 +168,29 @@ export type FindListingsQueryVariables = {};
 
 export type FindListingsQuery = { __typename?: "Query" } & {
   findListings: Array<
+    { __typename?: "Listing" } & Pick<
+      Listing,
+      | "id"
+      | "name"
+      | "category"
+      | "imageURL"
+      | "description"
+      | "price"
+      | "latitude"
+      | "longitude"
+      | "guests"
+      | "beds"
+      | "amenities"
+    > & { owner: { __typename?: "User" } & Pick<User, "id" | "email"> }
+  >;
+};
+
+export type GetListingQueryVariables = {
+  listingId: Scalars["String"];
+};
+
+export type GetListingQuery = { __typename?: "Query" } & {
+  getListing: Maybe<
     { __typename?: "Listing" } & Pick<
       Listing,
       | "id"
@@ -317,6 +372,61 @@ export function withFindListings<TProps, TChildProps = {}>(
     FindListingsQueryVariables,
     FindListingsProps<TChildProps>
   >(FindListingsDocument, operationOptions);
+}
+export const GetListingDocument = gql`
+  query GetListing($listingId: String!) {
+    getListing(listingId: $listingId) {
+      id
+      name
+      category
+      imageURL
+      description
+      price
+      latitude
+      longitude
+      guests
+      beds
+      amenities
+      owner {
+        id
+        email
+      }
+    }
+  }
+`;
+
+export class GetListingComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<GetListingQuery, GetListingQueryVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<GetListingQuery, GetListingQueryVariables>
+        query={GetListingDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type GetListingProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<GetListingQuery, GetListingQueryVariables>
+> &
+  TChildProps;
+export function withGetListing<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        GetListingQuery,
+        GetListingQueryVariables,
+        GetListingProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    GetListingQuery,
+    GetListingQueryVariables,
+    GetListingProps<TChildProps>
+  >(GetListingDocument, operationOptions);
 }
 export const ChangePassowrdDocument = gql`
   mutation ChangePassowrd($data: ChangePasswordInput!) {

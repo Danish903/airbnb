@@ -7,3 +7,4 @@ export * from "./generated/apolloComponents";
 export * from "./modules/CreateListing";
 export * from "./modules/FindListing";
 export * from "./modules/LogoutController";
+export * from "./modules/ViewListing";
