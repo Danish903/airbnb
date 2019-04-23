@@ -11,6 +11,7 @@ import TextPage from "../modules/TextPage";
 import { CreateListingConnector } from "../modules/listing/create/createListingConnector";
 import { FindListingConnector } from "../modules/listing/find/FindListingConnector";
 import Logout from "../modules/logout/Logout";
+import TestSub from "../modules/TestSub";
 
 export const Routes: React.FC<{}> = () => (
    <Router>
@@ -29,6 +30,7 @@ export const Routes: React.FC<{}> = () => (
             component={ChangePasswordConnector}
          />
          <Route path="/logout" exact component={Logout} />
+         <Route path="/test-sub" exact component={TestSub} />
          <Route path="/listings" component={FindListingConnector} />
 
          <AuthRoute path="/create-listing" component={CreateListingConnector} />
