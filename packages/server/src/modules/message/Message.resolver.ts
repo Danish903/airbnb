@@ -10,19 +10,17 @@ import {
    ArgsType,
    Field,
    PubSub,
-   PubSubEngine,
    ID,
-   ResolverFilterData
+   ResolverFilterData,
+   Publisher,
+   Args
 } from "type-graphql";
 import { MyContext } from "../../types/MyContext";
 import { Listing } from "../../entity/Listing";
 import { Message } from "../../entity/Message";
 import { isAuth } from "../middleware/isAuth";
-
-export interface NotificationPayload {
-   id: string;
-   text?: string;
-}
+import { mutationType } from "../../types/MutationTypes";
+import { NewMessagePayload } from "./NewMessage.interface";
 
 @ArgsType()
 export class NewMessageArgs {
@@ -50,7 +48,7 @@ export class MessageResolver {
       @Arg("listingId") listingId: string,
       @Arg("text") text: string,
       @Ctx() ctx: MyContext,
-      @PubSub() pubSub: PubSubEngine
+      @PubSub(NEW_MESSAGE) notifyAboutNewMessage: Publisher<NewMessagePayload>
    ): Promise<Boolean> {
       if (!ctx.req.session) return false;
       const userId = ctx.req.session.userId;
@@ -64,7 +62,14 @@ export class MessageResolver {
          userId
       }).save();
 
-      await pubSub.publish(NEW_MESSAGE, message);
+      // await pubSub.publish(NEW_MESSAGE, message);
+      await notifyAboutNewMessage({
+         mutation: mutationType.CREATED,
+         listingId: message.listingId,
+         id: message.id,
+         text: message.text,
+         userId: message.userId
+      });
       return true;
    }
 
@@ -73,16 +78,16 @@ export class MessageResolver {
       filter: ({
          payload,
          args
-      }: ResolverFilterData<Message, NewMessageArgs>) => {
+      }: ResolverFilterData<NewMessagePayload, NewMessageArgs>) => {
          return payload.listingId === args.listingId;
       }
    })
    async newMessage(
       @Root()
-      message: Message,
+      message: NewMessagePayload,
       //@ts-ignore
-      @Arg("listingId") listingId: string
-   ): Promise<Message> {
+      @Args("listingId") { listingId }: NewMessageArgs
+   ): Promise<NewMessagePayload> {
       return message;
    }
 }

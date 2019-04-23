@@ -7,7 +7,7 @@ import connectRedis from "connect-redis";
 import cors from "cors";
 import http from "http";
 import { RedisPubSub } from "graphql-redis-subscriptions";
-import { redis } from "./redis";
+// import { redis } from "./redis";
 import Redis from "ioredis";
 import { createSchema } from "./utilities/createSchema";
 import {
@@ -50,6 +50,7 @@ const main = async () => {
       publisher: new Redis(options),
       subscriber: new Redis(options)
    });
+
    const server = new ApolloServer({
       schema,
       context: ({ req, res }: any) => ({
@@ -108,7 +109,7 @@ const main = async () => {
    app.use(
       session({
          store: new RedisStore({
-            client: redis as any
+            client: new Redis(options) as any
          }),
          name: "qid",
          secret: `${process.env.REDIS_SECRET}`,

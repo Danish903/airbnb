@@ -6,9 +6,12 @@ import {
    ManyToOne
 } from "typeorm";
 import { ObjectType, Field, ID, Ctx, Root } from "type-graphql";
+
 import { User } from "./User";
 import { Listing } from "./Listing";
 import { MyContext } from "../types/MyContext";
+import { mutationType } from "../types/MutationTypes";
+
 @ObjectType()
 @Entity("messages") // messages table name for the db
 export class Message extends BaseEntity {
@@ -35,4 +38,6 @@ export class Message extends BaseEntity {
    async sender(@Root() parent: Message, @Ctx() ctx: MyContext): Promise<User> {
       return await ctx.usersLoader.load(parent.userId);
    }
+   @Field({ nullable: true })
+   mutation: mutationType;
 }
