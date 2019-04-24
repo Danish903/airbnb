@@ -68,6 +68,11 @@ export class Listing extends BaseEntity {
    }
    @Field()
    imageURL(@Root() parent: Listing, @Ctx() ctx: MyContext): string {
+      // return `${ctx.url}/images/${parent.pictureURL}`;
+
+      if (parent.pictureURL && parent.pictureURL.includes("http")) {
+         return parent.pictureURL;
+      }
       return `${ctx.url}/images/${parent.pictureURL}`;
    }
 }
