@@ -17,6 +17,7 @@ import { GraphQLUpload } from "graphql-upload";
 import { Upload } from "../../types/Upload";
 import { createWriteStream } from "fs";
 import { Stream } from "stream";
+import { LISTING_CACHE_KEY } from "../../index";
 
 const processUpload = async (
    filename: string,
@@ -42,8 +43,11 @@ class CreateListingResovler {
    }
 
    @Query(() => [Listing])
-   async findListings(): Promise<Listing[]> {
-      return Listing.find();
+   async findListings(@Ctx() ctx: MyContext): Promise<Listing[]> {
+      const listings = (await ctx.redis.lrange(LISTING_CACHE_KEY, 0, -1)) || [];
+      return listings.map((x: string) => JSON.parse(x));
+
+      // return Listing.find();
    }
 
    @UseMiddleware(isAuth)
@@ -60,11 +64,13 @@ class CreateListingResovler {
 
       const { imageName } = await processUpload(filename, createReadStream);
 
-      await Listing.create({
+      const listing = await Listing.create({
          ...data,
          pictureURL: imageName,
          userId: user
       }).save();
+
+      await ctx.redis.lpush(LISTING_CACHE_KEY, JSON.stringify(listing));
       return true;
    }
    @UseMiddleware(isAuth)

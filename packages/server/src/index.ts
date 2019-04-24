@@ -16,26 +16,39 @@ import {
    createListingsLoader
 } from "./utilities/authorsLoader";
 import { createUserLoader } from "./utilities/userLoader";
+import { Listing } from "./entity/Listing";
 
 // import queryComplexity, {
 //    fieldConfigEstimator,
 //    simpleEstimator
 // } from "graphql-query-complexity";
-
+export const LISTING_CACHE_KEY = "LISTING_CACHE_KEY";
 const REDIS_HOST = "127.0.0.1";
 const REDIS_PORT = 6379;
 
 const main = async () => {
-   try {
-      await createConnection();
-   } catch (error) {
-      console.log("PSQL connection failed");
-   }
    const options: Redis.RedisOptions = {
       host: REDIS_HOST,
       port: REDIS_PORT,
       retryStrategy: times => Math.max(times * 100, 3000)
    };
+
+   const redis = new Redis(options);
+   try {
+      await createConnection();
+   } catch (error) {
+      console.log("PSQL connection failed");
+   }
+   // clear cache
+
+   await redis.del(LISTING_CACHE_KEY);
+   //fill
+   const listings = await Listing.find();
+   const listingStrings = listings.map(x => JSON.stringify(x));
+   await redis.lpush(LISTING_CACHE_KEY, ...listingStrings);
+
+   // console.log(await redis.lrange(LISTING_CACHE_KEY, 0, -1));
+
    // const schema = await buildSchema({
    //    resolvers: [__dirname + "/modules/**/*.ts"],
    //    authChecker: ({ context: { req } }) =>
@@ -61,7 +74,8 @@ const main = async () => {
          listingsLoader: createListingsLoader(),
          usersLoader: createUserLoader(),
          url: req ? req.protocol + "://" + req.get("host") : "",
-         pubSub
+         pubSub,
+         redis
       }),
       playground: true,
       subscriptions: {

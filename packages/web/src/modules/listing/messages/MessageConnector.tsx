@@ -24,7 +24,7 @@ export default class MessageConnector extends React.Component<
                }
                return (
                   <div>
-                     <p>hello</p>
+                     <h3>Chat messages</h3>
                      {messages.map(message => (
                         <div key={message.id}>
                            <p key={message.id}>{message.text}</p>
