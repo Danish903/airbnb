@@ -54,7 +54,6 @@ class SearchListing {
       if (name) {
          listingQB.andWhere("l.name ilike :name", { name: `%${name}%` });
       }
-      // const listings = await Listing.find({ where });
 
       return await listingQB
          .take(limit)
